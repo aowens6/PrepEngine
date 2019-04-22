@@ -36,8 +36,9 @@
                 <a class="nav-item nav-link" href="#">Log Out</a>
               {% else %}
                 <a class="nav-item nav-link" href="#">Login</a>
-                <a class="nav-item nav-link" href="#">Register</a>
+                <a class="nav-item nav-link" href="{% url 'register' %}">Register</a>
               {% endif %}
+
             </div>
           </div>
         </div>
@@ -45,8 +46,22 @@
     </header>
 
     <div class="container">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
         {% block content %}
-        <h1>In home page</h1>
+            {% for tutorSet in tutorSets %}
+                <div class="article-metadata">
+                    {{ tutorSet.title }}
+                    {{ tutorSet.score }}/{{ tutorSet.totalQuestions }}
+                </div>
+            {% endfor %}
+            <a class="btn btn-outline-info" href="{% url 'create-engine' %}">Create Engine</a>
         {% endblock %}
     </div>
 
