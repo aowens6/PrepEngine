@@ -26,16 +26,18 @@
           </button>
           <div class="collapse navbar-collapse" id="navbarToggle">
             <div class="navbar-nav mr-auto">
-              <a class="nav-item nav-link" href="{% url 'engine-home' %}">Home</a>
-              <a class="nav-item nav-link" href="{% url 'create-engine' %}">Create Engine</a>
+                {% if user.is_authenticated %}
+                    <a class="nav-item nav-link" href="{% url 'engine-home' %}">Home</a>
+                    <a class="nav-item nav-link" href="{% url 'create-engine' %}">Create Engine</a>
+                {% endif %}
             </div>
             <!-- Navbar Right Side -->
             <div class="navbar-nav">
               {% if user.is_authenticated %}
-                <a class="nav-item nav-link" href="#">Profile</a>
-                <a class="nav-item nav-link" href="#">Log Out</a>
+                <a class="nav-item nav-link" href="{% url 'profile' %}">Profile</a>
+                <a class="nav-item nav-link" href="{% url 'logout' %}" data-toggle="modal" data-target="#confirmLogout">Log Out</a>
               {% else %}
-                <a class="nav-item nav-link" href="#">Login</a>
+                <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
                 <a class="nav-item nav-link" href="{% url 'register' %}">Register</a>
               {% endif %}
 
@@ -44,6 +46,26 @@
         </div>
       </nav>
     </header>
+
+    <div class="modal" id="confirmLogout">
+      <div class="modal-dialog">
+        <div class="modal-content">
+
+          <div class="modal-header">
+            <h4 class="modal-title">Confirm Logout</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+          <div class="modal-body">
+            Are you sure you want to log out?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <a class="btn btn-danger" href="{% url 'logout' %}">Log Out</a>
+          </div>
+
+        </div>
+      </div>
+    </div>
 
     <div class="container">
         {% if messages %}
@@ -55,13 +77,7 @@
         {% endif %}
 
         {% block content %}
-            {% for tutorSet in tutorSets %}
-                <div class="article-metadata">
-                    {{ tutorSet.title }}
-                    {{ tutorSet.score }}/{{ tutorSet.totalQuestions }}
-                </div>
-            {% endfor %}
-            <a class="btn btn-outline-info" href="{% url 'create-engine' %}">Create Engine</a>
+
         {% endblock %}
     </div>
 
