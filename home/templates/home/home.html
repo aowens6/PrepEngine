@@ -1,12 +1,12 @@
 {% extends "home/base.html" %}
 {% block content %}
     {% for tutorSet in tutorSets %}
-    <a href="{% url 'create-engine' %}">
+    <a href="{% url 'tutorSet-detail' tutorSet.pk %}">
         <div class="article-metadata">
             {{ tutorSet.title }}
             {{ tutorSet.score }}/{{ tutorSet.totalQuestions }}
         </div>
     </a>
     {% endfor %}
-    <a class="btn btn-outline-info" href="{% url 'create-engine' %}">Create Engine</a>
+    <a class="btn btn-outline-info" href="{% url 'create-set' %}">Create Engine</a>
 {% endblock %}

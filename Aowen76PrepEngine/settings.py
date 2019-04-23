@@ -35,7 +35,6 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'tutor_sets.apps.TutorSetsConfig',
     'crispy_forms',
-    'create_engine.apps.CreateEngineConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
