@@ -1,12 +1,14 @@
 {% extends "home/base.html" %}
 {% block content %}
-    {% for tutorSet in tutorSets %}
-    <a href="{% url 'tutorSet-detail' tutorSet.pk %}">
-        <div class="article-metadata">
-            {{ tutorSet.title }}
-            {{ tutorSet.score }}/{{ tutorSet.totalQuestions }}
-        </div>
-    </a>
-    {% endfor %}
-    <a class="btn btn-outline-info" href="{% url 'tutorSet-create' %}">Create Engine</a>
+    {% if user.is_authenticated %}
+        {% for tutorSet in tutorSets %}
+        <a href="{% url 'tutorSet-detail' tutorSet.pk %}">
+            <div class="article-metadata">
+                {{ tutorSet.title }}
+                {{ tutorSet.score }}/{{ tutorSet.totalQuestions }}
+            </div>
+        </a>
+        {% endfor %}
+        <a class="btn btn-outline-info" href="{% url 'tutorSet-create' %}">Create Engine</a>
+    {% endif %}
 {% endblock %}
