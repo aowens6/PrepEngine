@@ -7,5 +7,8 @@
 
 {{ object.author.username }}
 
+<div>
+   <a class="btn btn-outline-info" href="{% url 'add-question' tutorSetID=object.pk %}">Add Question</a>
+</div>
 
 {% endblock content %}

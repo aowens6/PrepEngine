@@ -22,6 +22,9 @@ class Question(models.Model):
     def __str__(self):
         return self.prompt
 
+    def get_absolute_url(self):
+        return reverse('tutorSet-detail', kwargs={'pk': self.tutorSet.pk})
+
 class Option(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     text = models.CharField(max_length=255)
