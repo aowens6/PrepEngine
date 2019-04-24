@@ -16,3 +16,11 @@ class TutorSetCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.author = self.request.user
         return super().form_valid(form)
+
+class QuestionCreateView(LoginRequiredMixin, CreateView):
+    model = Question
+    fields = ['prompt']
+
+    def form_valid(self, form):
+        form.instance.tutorSet = TutorSet.objects.get(pk=self.kwargs['tutorSetID'])
+        return super().form_valid(form)

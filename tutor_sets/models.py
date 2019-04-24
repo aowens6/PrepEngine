@@ -1,6 +1,5 @@
 from django.db import models
 from django.urls import reverse
-from django.shortcuts import redirect
 
 from django.contrib.auth.models import User
 
@@ -16,19 +15,16 @@ class TutorSet(models.Model):
     def get_absolute_url(self):
         return reverse('tutorSet-detail', kwargs={'pk': self.pk})
 
-    # def get_absolute_url(self):
-    #     return redirect('')
-
 class Question(models.Model):
-    tutorSetID = models.ForeignKey(TutorSet, on_delete=models.CASCADE)
-    question = models.CharField(max_length=255)
+    tutorSet = models.ForeignKey(TutorSet, on_delete=models.CASCADE)
+    prompt = models.CharField(max_length=255)
 
     def __str__(self):
-        return self.question
+        return self.prompt
 
-class Answer(models.Model):
-    questionId = models.ForeignKey(Question, on_delete=models.CASCADE)
-    answer = models.CharField(max_length=255)
+class Option(models.Model):
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    text = models.CharField(max_length=255)
 
     def __str__(self):
-        return self.answer
+        return self.text
