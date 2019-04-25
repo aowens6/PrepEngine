@@ -7,8 +7,29 @@
 
 {{ object.author.username }}
 
-<div>
-   <a class="btn btn-outline-info" href="{% url 'add-question' tutorSetID=object.pk %}">Add Question</a>
-</div>
+{% for question in object.question_set.all %}
+   <div>
+      <a href="{% url 'edit-question' tutorset_pk=object.pk question_pk=question.pk %}">
+         {{ question.prompt }}
+      </a>
+         <div>
+            {% for option in question.option_set.all %}
+               <div>
+                  {{ option.text }}
+               </div>
+            {% endfor %}
+         </div>
+   </div>
+
+{% endfor %}
+
+{% if user.is_authenticated %}
+   <div>
+      <a class="btn btn-outline-info" href="{% url 'add-question' tutorset_pk=object.pk %}">Add Question</a>
+      <a class="btn btn-outline-info" href="{% url 'tutorSet-edit' pk=object.pk %}">Edit Tutor Set</a>
+   </div>
+{% endif %}
+
+
 
 {% endblock content %}

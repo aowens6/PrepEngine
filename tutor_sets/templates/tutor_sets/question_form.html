@@ -5,13 +5,43 @@
         <form method="POST">
             {% csrf_token %}
             <fieldset class="form-group">
-                <legend class="border-bottom mb-4">New Question</legend>
+                <legend class="border-bottom mb-4"> {{ title }} for {{ tutorSet.title }}</legend>
                 {{ form|crispy }}
+                {{ formset.management_form }}
+
+                <h3>Options</h3>
+
+                <table role="grid">
+                    <thead>
+                        <tr>
+                            <th scope="col">Order</th>
+                            <th scope="col">Text</th>
+                            <th scope="col">Correct</th>
+                            <th scope="col">Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for form in formset %}
+                            <tr>
+                                <td> {{ form.id }}{{ form.order }} </td>
+                                <td> {{ form.text }}</td>
+                                <td> {{ form.correct }} </td>
+                                {% if form.instance.pk %}
+                                    <td> {{ form.DELETE}} </td>
+                                {% else %}
+                                    <td></td>
+                                {% endif %}
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
             </fieldset>
             <div class="form-group">
-                <button class="btn btn-outline-info" type="submit">Create</button>
+                <button class="btn btn-outline-info" type="submit">Save</button>
             </div>
         </form>
+
     </div>
 {{ object }}
 {% endblock content %}

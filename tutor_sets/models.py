@@ -15,19 +15,31 @@ class TutorSet(models.Model):
     def get_absolute_url(self):
         return reverse('tutorSet-detail', kwargs={'pk': self.pk})
 
+
 class Question(models.Model):
     tutorSet = models.ForeignKey(TutorSet, on_delete=models.CASCADE)
+    order = models.IntegerField(default=0)
     prompt = models.CharField(max_length=255)
+    shuffle_answers = models.BooleanField(default=False)
+
+    class Meta:
+        ordering = ['order',]
 
     def __str__(self):
         return self.prompt
 
     def get_absolute_url(self):
-        return reverse('tutorSet-detail', kwargs={'pk': self.tutorSet.pk})
+        return self.tutorSet.get_absolute_url()
+
 
 class Option(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    text = models.CharField(max_length=255)
+    order = models.IntegerField(default=0)
+    text = models.CharField(max_length=255, default='')
+    correct = models.BooleanField(default=False)
+
+    class Meta:
+        ordering = ['order',]
 
     def __str__(self):
         return self.text
