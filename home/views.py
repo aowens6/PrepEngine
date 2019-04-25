@@ -12,3 +12,4 @@ class TutorSetListView(ListView):
     model = TutorSet
     template_name = 'home/home.html'
     context_object_name = 'tutorSets'
+    paginate_by = 5

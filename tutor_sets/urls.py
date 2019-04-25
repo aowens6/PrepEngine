@@ -8,5 +8,4 @@ urlpatterns = [
     path('tutorSet/<int:pk>/', TutorSetDetailView.as_view(), name='tutorSet-detail'),
     path('addQuestion/<int:tutorset_pk>/', question_create, name='add-question'),
     path('editQuestion/<int:tutorset_pk>/<int:question_pk>/', question_edit, name='edit-question'),
-    path('addOptions/<int:question_pk>/', option_create, name='add-options'),
 ]
