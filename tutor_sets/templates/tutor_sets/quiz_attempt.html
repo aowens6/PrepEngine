@@ -1,0 +1,27 @@
+{% extends "home/base.html" %}
+{% block content %}
+
+{% for question in questionSet %}
+    {{ question.prompt }}
+    {% for option in question.option_set.all %}
+        <p>{{ option.text }}</p>
+
+    {% endfor %}
+
+{% endfor %}
+
+<a class="btn btn-outline-info mb4" href="?page=1">Submit</a>
+
+{% if questionSet.has_previous %}
+    <a class="btn btn-outline-info mb4" href="?page={{ questionSet.previous_page_number }}">Previous</a>
+{% endif %}
+
+{% if questionSet.has_next %}
+    <a class="btn btn-outline-info mb4" href="?page={{ questionSet.next_page_number }}">Next</a>
+{% else %}
+    <a class="btn btn-outline-info mb4" href="#">Finish</a>
+{% endif %}
+
+
+
+{% endblock content %}

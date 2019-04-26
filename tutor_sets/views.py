@@ -25,6 +25,26 @@ def tutorset_create(request):
 
 
 @login_required
+def tutorset_start(request, tutorset_pk):
+    tutorSet = get_object_or_404(TutorSet, pk=tutorset_pk)
+    questions_list = tutorSet.question_set.all()
+    page = request.GET.get('page')
+    paginator = Paginator(questions_list, 1)
+
+    try:
+        questions = paginator.page(page)
+    except PageNotAnInteger:
+        questions = paginator.page(1)
+    except EmptyPage:
+        questions = paginator.page(paginator.num_pages)
+
+    return render(request, 'tutor_sets/quiz_attempt.html', {
+        'tutorSet': tutorSet,
+        'questionSet': questions,
+    })
+
+
+@login_required
 def tutorset_edit(request, pk):
     tutorSet = get_object_or_404(TutorSet, pk=pk)
     form = forms.TutorSetForm(instance=tutorSet)
@@ -82,14 +102,14 @@ def question_edit(request, tutorset_pk, question_pk):
     tutorSet = get_object_or_404(TutorSet, pk=tutorset_pk)
     form = forms.QuestionForm(instance=question)
     option_forms = forms.OptionInlineFormSet(
-        queryset=Option.objects.all()
+        queryset=form.instance.option_set.all()
     )
 
     if request.method == 'POST':
         form = forms.QuestionForm(instance=question, data=request.POST)
         option_forms = forms.OptionInlineFormSet(
             request.POST,
-            queryset=Option.objects.all()
+            queryset=form.instance.option_set.all()
         )
         if form.is_valid() and option_forms.is_valid():
             form.save()
