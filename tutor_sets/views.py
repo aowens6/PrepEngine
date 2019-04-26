@@ -1,9 +1,11 @@
 from django.shortcuts import render, get_object_or_404
 from .models import TutorSet, Question, Option
 from django.views.generic import DetailView, CreateView
+from django.views.generic.list import MultipleObjectMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.http import HttpResponseRedirect
 from . import forms
 
@@ -124,9 +126,36 @@ def option_create(request, question_pk):
 # def createSet(request):
 #     return render(request, 'tutor_sets/createSet.html')
 #
+@login_required
+def tutorset_overview(request, tutorset_pk):
+    tutorSet = get_object_or_404(TutorSet, pk=tutorset_pk)
+    questions_list = tutorSet.question_set.all()
+    page = request.GET.get('page')
+    paginator = Paginator(questions_list, 5)
+
+    try:
+        questions = paginator.page(page)
+    except PageNotAnInteger:
+        questions = paginator.page(1)
+    except EmptyPage:
+        questions = paginator.page(paginator.num_pages)
+
+    return render(request, 'tutor_sets/tutorset_detail.html', {
+        'tutorSet': tutorSet,
+        'questionSet': questions,
+    })
+
 class TutorSetDetailView(DetailView):
     model = TutorSet
-#
+    template_name = 'tutor_sets/tutorset_detail.html'
+    paginate_by = 5
+
+    def get_context_data(self, **kwargs):
+        questions_list = self.object.question_set.all()
+        context = super(TutorSetDetailView, self).get_context_data(object_list=questions_list, **kwargs)
+        return context
+
+
 # class TutorSetCreateView(LoginRequiredMixin, CreateView):
 #     model = TutorSet
 #     fields = ['title',]

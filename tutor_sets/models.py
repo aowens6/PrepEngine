@@ -13,7 +13,7 @@ class TutorSet(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return reverse('tutorSet-detail', kwargs={'pk': self.pk})
+        return reverse('tutorSet-detail', kwargs={'tutorset_pk': self.pk})
 
 
 class Question(models.Model):
