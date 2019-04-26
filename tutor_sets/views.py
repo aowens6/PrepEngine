@@ -37,6 +37,12 @@ def tutorset_edit(request, pk):
     return render(request, 'tutor_sets/tutorset_form.html',
                   {'form': form, 'title': 'Edit Tutor Set'})
 
+@login_required
+def tutorset_delete(request, tutorset_pk):
+    tutorSet = get_object_or_404(TutorSet, pk=tutorset_pk)
+    tutorSet.delete()
+    messages.success(request, f'Tutor set {tutorSet.title} deleted')
+    return HttpResponseRedirect('/')
 
 @login_required
 def question_create(request, tutorset_pk):
@@ -100,8 +106,18 @@ def question_edit(request, tutorset_pk, question_pk):
             messages.success(request, 'Edited question')
             return HttpResponseRedirect(question.get_absolute_url())
     return render(request, 'tutor_sets/question_form.html',
-                  {'form': form, 'title': 'Edit Question', 'tutorSet': tutorSet, 'formset': option_forms})
+                  {'form': form,
+                   'title': 'Edit Question',
+                   'tutorSet': tutorSet,
+                   'formset': option_forms,
+                   'question': question})
 
+@login_required
+def question_delete(request, question_pk):
+    question = get_object_or_404(Question, pk=question_pk)
+    question.delete()
+    messages.success(request, f'{question.prompt} deleted')
+    return HttpResponseRedirect(question.get_absolute_url())
 
 @login_required
 def option_create(request, question_pk):
