@@ -5,7 +5,9 @@
 
 {{ tutorSet.pk }}
 
-{{ tutorSet.author.username }}
+{{ tutorSet.author_id }}
+
+{{ user.id }}
 
 {% for question in questionSet %}
    <div>
@@ -23,27 +25,28 @@
 
 {% endfor %}
 
-{% if questionSet.has_previous %}
-   <a class="btn btn-outline-info mb4" href="?page=1">First</a>
-   <a class="btn btn-outline-info mb4" href="?page={{ questionSet.previous_page_number }}">Previous</a>
+{% if questionSet.paginator.num_pages > 1 %}
+    {% if questionSet.has_previous %}
+       <a class="btn btn-outline-info mb4" href="?page=1">First</a>
+       <a class="btn btn-outline-info mb4" href="?page={{ questionSet.previous_page_number }}">Previous</a>
+    {% endif %}
+
+    {% for num in questionSet.paginator.page_range %}
+       {% if questionSet.number == num %}
+          <a class="btn btn-info mb4" href="?page={{ num }}">{{ num }}</a>
+       {% elif num > questionSet.number|add:'-3' and num < questionSet.number|add:3 %}
+          <a class="btn btn-outline-info mb4" href="?page={{ num }}">{{ num }}</a>
+       {% endif %}
+    {% endfor %}
+
+    {% if questionSet.has_next %}
+       <a class="btn btn-outline-info mb4" href="?page={{ questionSet.next_page_number }}">Next</a>
+       <a class="btn btn-outline-info mb4" href="?page={{ questionSet.paginator.num_pages }}">Last</a>
+    {% endif %}
+
 {% endif %}
 
-{% for num in questionSet.paginator.page_range %}
-   {% if questionSet.number == num %}
-      <a class="btn btn-info mb4" href="?page={{ num }}">{{ num }}</a>
-   {% elif num > questionSet.number|add:'-3' and num < questionSet.number|add:3 %}
-      <a class="btn btn-outline-info mb4" href="?page={{ num }}">{{ num }}</a>
-   {% endif %}
-{% endfor %}
-
-{% if questionSet.has_next %}
-   <a class="btn btn-outline-info mb4" href="?page={{ questionSet.next_page_number }}">Next</a>
-   <a class="btn btn-outline-info mb4" href="?page={{ questionSet.paginator.num_pages }}">Last</a>
-{% endif %}
-
-
-
-{% if user.is_authenticated %}
+{% if user.is_authenticated  and tutorSet.author_id == user.id %}
    <div>
       <a class="btn btn-outline-info" href="{% url 'add-question' tutorset_pk=tutorSet.pk %}">Add Question</a>
       <a class="btn btn-outline-info" href="{% url 'tutorSet-edit' pk=tutorSet.pk %}">Edit Tutor Set</a>
