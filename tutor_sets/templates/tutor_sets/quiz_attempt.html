@@ -3,14 +3,18 @@
 
 {% for question in questionSet %}
     {{ question.prompt }}
-    {% for option in question.option_set.all %}
-        <p>{{ option.text }}</p>
 
-    {% endfor %}
+    <form method="post">
+        {% csrf_token %}
+        {% for option in question.option_set.all %}
+            <div class="radio ml-4 m-2">
+                <label><input class="mr-2" id="{{ option.id }}" type="radio" name="option-radio" value="{{ option.id }}">{{ option.text }}</label>
+            </div>
+        {% endfor %}
+        <input class="btn btn-outline-info mb4"type="submit" value="Submit">
+    </form>
 
 {% endfor %}
-
-<a class="btn btn-outline-info mb4" href="?page=1">Submit</a>
 
 {% if questionSet.has_previous %}
     <a class="btn btn-outline-info mb4" href="?page={{ questionSet.previous_page_number }}">Previous</a>

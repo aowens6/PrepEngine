@@ -1,13 +1,7 @@
 {% extends "home/base.html" %}
 {% block content %}
 
-<h1>In tutorSet detail</h1>
-
-{{ tutorSet.pk }}
-
-{{ tutorSet.author_id }}
-
-{{ user.id }}
+<h1>{{ tutorSet.title }}</h1>
 
 {% for question in questionSet %}
    <div>
