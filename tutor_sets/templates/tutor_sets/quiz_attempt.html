@@ -1,14 +1,16 @@
 {% extends "home/base.html" %}
 {% block content %}
 
+<h2>{{score}} / {{tutorSet.question_set.count }}</h2>
+
 {% for question in questionSet %}
     {{ question.prompt }}
 
-    <form method="post">
+    <form method="POST">
         {% csrf_token %}
         {% for option in question.option_set.all %}
             <div class="radio ml-4 m-2">
-                <label><input class="mr-2" id="{{ option.id }}" type="radio" name="option-radio" value="{{ option.id }}">{{ option.text }}</label>
+                <label><input class="mr-2" id="{{ option.id }}" type="radio" name="option-radio" value="{{ option.id }}">{{ option.text }}{{option.correct}}</label>
             </div>
         {% endfor %}
         <input class="btn btn-outline-info mb4"type="submit" value="Submit">
@@ -23,7 +25,10 @@
 {% if questionSet.has_next %}
     <a class="btn btn-outline-info mb4" href="?page={{ questionSet.next_page_number }}">Next</a>
 {% else %}
-    <a class="btn btn-outline-info mb4" href="#">Finish</a>
+    <form action="{% url 'finish-quiz' tutorset_pk=tutorSet.pk %}" method="POST">
+        {% csrf_token %}
+        <button class="btn btn-outline-info mb4" type="submit">Finish</button>
+    </form>
 {% endif %}
 
 

@@ -1,8 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from .models import TutorSet, Question, Option
-from django.views.generic import DetailView, CreateView
-from django.views.generic.list import MultipleObjectMixin
-from django.contrib.auth.mixins import LoginRequiredMixin
+from .models import TutorSet, Question, Option, Attempt
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
@@ -30,6 +27,7 @@ def tutorset_start(request, tutorset_pk):
     questions_list = tutorSet.question_set.all()
     page = request.GET.get('page')
     paginator = Paginator(questions_list, 1)
+    score = 0
 
     try:
         questions = paginator.page(page)
@@ -41,8 +39,27 @@ def tutorset_start(request, tutorset_pk):
     return render(request, 'tutor_sets/quiz_attempt.html', {
         'tutorSet': tutorSet,
         'questionSet': questions,
+        'score': score,
     })
 
+
+@login_required
+def finish_quiz(request, tutorset_pk):
+    tutorSet = get_object_or_404(TutorSet, pk=tutorset_pk)
+    attempt = Attempt(tutorSet=tutorSet,
+                      totalQuestions=tutorSet.question_set.count(),
+                      user=request.user)
+    attempt.save()
+
+    return render(request, 'tutor_sets/quiz_attempt_results.html', {
+        'tutorSet': tutorSet,
+        'attempt': attempt,
+    })
+
+# 1. get the submitted option from the form,
+# 2. if its correct attribute is True then add one to a score variable
+# 3. when the user finishes the quiz, then update the score attribute in the database
+# 4. display the results
 
 @login_required
 def tutorset_edit(request, pk):
@@ -159,9 +176,6 @@ def option_create(request, question_pk):
                   {'formset': formset, 'title': 'New Options', 'question': question})
 
 
-# def createSet(request):
-#     return render(request, 'tutor_sets/createSet.html')
-#
 @login_required
 def tutorset_overview(request, tutorset_pk):
     tutorSet = get_object_or_404(TutorSet, pk=tutorset_pk)
@@ -180,31 +194,4 @@ def tutorset_overview(request, tutorset_pk):
         'tutorSet': tutorSet,
         'questionSet': questions,
     })
-
-class TutorSetDetailView(DetailView):
-    model = TutorSet
-    template_name = 'tutor_sets/tutorset_detail.html'
-    paginate_by = 5
-
-    def get_context_data(self, **kwargs):
-        questions_list = self.object.question_set.all()
-        context = super(TutorSetDetailView, self).get_context_data(object_list=questions_list, **kwargs)
-        return context
-
-
-# class TutorSetCreateView(LoginRequiredMixin, CreateView):
-#     model = TutorSet
-#     fields = ['title',]
-#
-#     def form_valid(self, form):
-#         form.instance.author = self.request.user
-#         return super().form_valid(form)
-#
-# class QuestionCreateView(LoginRequiredMixin, CreateView):
-#     model = Question
-#     fields = ['prompt']
-#
-#     def form_valid(self, form):
-#         form.instance.tutorSet = TutorSet.objects.get(pk=self.kwargs['tutorSetID'])
-#         return super().form_valid(form)
 
