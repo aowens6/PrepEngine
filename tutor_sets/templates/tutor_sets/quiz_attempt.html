@@ -1,4 +1,5 @@
 {% extends "home/base.html" %}
+{% load static %}
 {% block content %}
 
 <h2>{{score}} / {{tutorSet.question_set.count }}</h2>
@@ -13,9 +14,8 @@
                 <label><input class="mr-2" id="{{ option.id }}" type="radio" name="option-radio" value="{{ option.id }}">{{ option.text }}{{option.correct}}</label>
             </div>
         {% endfor %}
-        <input class="btn btn-outline-info mb4"type="submit" value="Submit">
-    </form>
 
+    </form>
 {% endfor %}
 
 {% if questionSet.has_previous %}
@@ -25,12 +25,19 @@
 {% if questionSet.has_next %}
     <a class="btn btn-outline-info mb4" href="?page={{ questionSet.next_page_number }}">Next</a>
 {% else %}
-    <form action="{% url 'finish-quiz' tutorset_pk=tutorSet.pk %}" method="POST">
-        {% csrf_token %}
-        <button class="btn btn-outline-info mb4" type="submit">Finish</button>
-    </form>
+
 {% endif %}
 
+<form action="{% url 'finish-quiz' tutorset_pk=tutorSet.pk %}" method="POST">
+    {% csrf_token %}
+    <button class="btn btn-outline-info mb4" type="submit">Finish</button>
+</form>
 
+<script src="{% static 'tutor_sets/grade.js' %}">
+</script>
+
+<script >
+    alert('in alert')
+</script>
 
 {% endblock content %}

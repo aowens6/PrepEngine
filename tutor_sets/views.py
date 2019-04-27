@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.http import HttpResponseRedirect
 from . import forms
+import random
 
 @login_required
 def tutorset_create(request):
@@ -24,7 +25,8 @@ def tutorset_create(request):
 @login_required
 def tutorset_start(request, tutorset_pk):
     tutorSet = get_object_or_404(TutorSet, pk=tutorset_pk)
-    questions_list = tutorSet.question_set.all()
+    questions_list = list(tutorSet.question_set.all())
+    random.shuffle(questions_list)
     page = request.GET.get('page')
     paginator = Paginator(questions_list, 1)
     score = 0
@@ -38,7 +40,7 @@ def tutorset_start(request, tutorset_pk):
 
     return render(request, 'tutor_sets/quiz_attempt.html', {
         'tutorSet': tutorSet,
-        'questionSet': questions,
+        'questionSet': questions_list,
         'score': score,
     })
 
