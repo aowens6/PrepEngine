@@ -23,7 +23,7 @@ def tutorset_create(request):
 
 
 @login_required
-def tutorset_start(request, tutorset_pk):
+def tutorset_start2(request, tutorset_pk):
     tutorSet = get_object_or_404(TutorSet, pk=tutorset_pk)
     questions_list = list(tutorSet.question_set.all())
     random.shuffle(questions_list)
@@ -43,6 +43,15 @@ def tutorset_start(request, tutorset_pk):
         'questionSet': questions_list,
         'score': score,
     })
+
+@login_required
+def tutorset_start(request, tutorset_pk):
+    tutorSet = get_object_or_404(TutorSet, pk=tutorset_pk)
+
+    question = Question.objects.first()
+    qform = forms.QuestionAttemptForm(question)
+
+    return render(request, 'tutor_sets/quiz_attempt2.html', {'form': qform})
 
 
 @login_required
