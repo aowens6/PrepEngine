@@ -2,10 +2,10 @@
 {% block content %}
     {% if user.is_authenticated %}
         {% for tutorSet in tutorSets %}
-        <a href="{% url 'tutorSet-detail' tutorSet.pk %}">
-            <div class="article-metadata">
-                {{ tutorSet.title }}
-                {{ tutorSet.score }}/{{ tutorSet.totalQuestions }}
+        <a style="text-decoration: none" href="{% url 'tutorSet-detail' tutorSet.pk %}">
+            <div class="card mt-2 mb-2" style="width: 35%">
+                <h5 class="card-title m-2">{{ tutorSet.title }}</h5>
+                <p class="card-title ml-4">Created by: <a style="display: inline-block" href="{% url 'creator-profile' creator_pk=tutorSet.author.id %}">{{ tutorSet.author.username }}</a></p>
             </div>
         </a>
         {% endfor %}
@@ -31,7 +31,7 @@
         {% endif %}
 
         <div>
-            <a class="btn btn-outline-info" href="{% url 'tutorSet-create' %}">Create Engine</a>
+            <a class="btn btn-outline-info" href="{% url 'tutorSet-create' %}">Create Tutor Set</a>
         </div>
 
     {% endif %}

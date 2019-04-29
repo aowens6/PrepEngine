@@ -1,15 +1,17 @@
 {% extends "home/base.html" %}
+{% load crispy_forms_tags %}
 {% block content %}
-    {% if user.is_authenticated %}
-        {% for tutorSet in tutorSets %}
-        <a style="text-decoration: none" href="{% url 'tutorSet-detail' tutorSet.pk %}">
+    <h1>Tutor Sets by {{ creator.username }}</h1>
+
+{% for tutorSet in tutorSets %}
+    <a style="text-decoration: none" href="{% url 'tutorSet-detail' tutorSet.pk %}">
             <div class="card mt-2 mb-2" style="width: 35%">
                 <h5 class="card-title m-2">{{ tutorSet.title }}</h5>
             </div>
         </a>
-        {% endfor %}
+{% endfor %}
 
-        {% if is_paginated %}
+{% if is_paginated %}
             {% if page_obj.has_previous %}
                 <a class="btn btn-outline-info mb-4" href="?page=1">First</a>
                 <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.previous_page_number }}">Previous</a>
@@ -17,7 +19,7 @@
 
             {% for num in page_obj.paginator.page_range %}
                 {% if page_obj.number == num %}
-                    <a class="btn btn-info mb4" href="?page={{ num }}">{{ num }}</a>
+                    <a class="btn btn-info mb-4" href="?page={{ num }}">{{ num }}</a>
                 {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:3 %}
                     <a class="btn btn-outline-info mb-4" href="?page={{ num }}">{{ num }}</a>
                 {% endif %}
@@ -29,9 +31,4 @@
             {% endif %}
         {% endif %}
 
-        <div>
-            <a class="btn btn-outline-info mb-4" href="{% url 'tutorSet-create' %}">Create Engine</a>
-        </div>
-
-    {% endif %}
-{% endblock %}
+{% endblock content %}

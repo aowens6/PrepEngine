@@ -5,7 +5,6 @@ from django.contrib import messages
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.http import HttpResponseRedirect
 from . import forms
-import random
 
 @login_required
 def tutorset_create(request):
@@ -41,38 +40,6 @@ def tutorset_start(request, tutorset_pk):
         'questionSet': questions,
     })
 
-@login_required
-def tutorset_start2(request, tutorset_pk):
-    tutorSet = get_object_or_404(TutorSet, pk=tutorset_pk)
-
-    question = Question.objects.first()
-    qform = forms.QuestionAttemptForm(question)
-
-    return render(request, 'tutor_sets/quiz_attempt2.html', {'form': qform})
-
-
-@login_required
-def finish_quiz(request, tutorset_pk):
-    tutorSet = get_object_or_404(TutorSet, pk=tutorset_pk)
-
-    if request.method == 'POST':
-        request_data = request.POST
-        request_data.getlist
-
-    attempt = Attempt(tutorSet=tutorSet,
-                      totalQuestions=tutorSet.question_set.count(),
-                      user=request.user)
-    attempt.save()
-
-    return render(request, 'tutor_sets/quiz_attempt_results.html', {
-        'tutorSet': tutorSet,
-        'attempt': attempt,
-    })
-
-# 1. get the submitted option from the form,
-# 2. if its correct attribute is True then add one to a score variable
-# 3. when the user finishes the quiz, then update the score attribute in the database
-# 4. display the results
 
 @login_required
 def tutorset_edit(request, pk):

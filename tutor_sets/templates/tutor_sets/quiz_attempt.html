@@ -13,7 +13,7 @@
                 <label><input class="mr-2" id="{{ option.id }}" type="radio" name="option-radio" value="{{option.correct}}">{{ option.text }}{{option.correct}}</label>
             </div>
         {% endfor %}
-        <a class="btn btn-outline-info mb4" onclick="verify()">Verify</a>
+        <a class="btn btn-outline-info mb-4" onclick="verify()">Verify</a>
     </form>
 {% endfor %}
 
@@ -22,9 +22,9 @@
 </div>
 
 {% if questionSet.has_next %}
-    <a class="btn btn-outline-info mb4" href="?page={{ questionSet.next_page_number }}">Next</a>
+    <a class="btn btn-outline-info mb-4" href="?page={{ questionSet.next_page_number }}">Next</a>
 {% else %}
-    <a class="btn btn-outline-info mb4" href="{% url 'engine-home' %}">Finish</a>
+    <a class="btn btn-outline-info mb-4" href="{% url 'engine-home' %}">Finish</a>
 {% endif %}
 
 

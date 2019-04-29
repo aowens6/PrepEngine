@@ -34,6 +34,7 @@ OptionFormSet = forms.modelformset_factory(Option, form=OptionForm)
 OptionInlineFormSet = forms.inlineformset_factory(
     Question,
     Option,
+    min_num=1,
     fields=('order', 'text', 'correct'),
     formset=OptionFormSet,
 )
