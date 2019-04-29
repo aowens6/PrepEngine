@@ -2,8 +2,7 @@
 {% load static %}
 {% block content %}
 
-<h2>{{score}} / {{tutorSet.question_set.count }}</h2>
-
+<h2>{{ questionSet.number }} of {{ questionSet.paginator.count }} questions</h2>
 {% for question in questionSet %}
     {{ question.prompt }}
 
@@ -11,33 +10,29 @@
         {% csrf_token %}
         {% for option in question.option_set.all %}
             <div class="radio ml-4 m-2">
-                <label><input class="mr-2" id="{{ option.id }}" type="radio" name="option-radio" value="{{ option.id }}">{{ option.text }}{{option.correct}}</label>
+                <label><input class="mr-2" id="{{ option.id }}" type="radio" name="option-radio" value="{{option.correct}}">{{ option.text }}{{option.correct}}</label>
             </div>
         {% endfor %}
-
+        <a class="btn btn-outline-info mb4" onclick="verify()">Verify</a>
     </form>
 {% endfor %}
 
-{% if questionSet.has_previous %}
-    <a class="btn btn-outline-info mb4" href="?page={{ questionSet.previous_page_number }}">Previous</a>
-{% endif %}
+<div id="explanation" style="display:none">
+    <p>hidden explanation</p>
+</div>
 
 {% if questionSet.has_next %}
     <a class="btn btn-outline-info mb4" href="?page={{ questionSet.next_page_number }}">Next</a>
 {% else %}
-
+    <a class="btn btn-outline-info mb4" href="{% url 'engine-home' %}">Finish</a>
 {% endif %}
 
-<form action="{% url 'finish-quiz' tutorset_pk=tutorSet.pk %}" method="POST">
-    {% csrf_token %}
-    <button class="btn btn-outline-info mb4" type="submit">Finish</button>
-</form>
 
 <script src="{% static 'tutor_sets/grade.js' %}">
 </script>
 
-<script >
-    alert('in alert')
+<script type="text/javascript">
+
 </script>
 
 {% endblock content %}

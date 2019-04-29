@@ -23,13 +23,11 @@ def tutorset_create(request):
 
 
 @login_required
-def tutorset_start2(request, tutorset_pk):
+def tutorset_start(request, tutorset_pk):
     tutorSet = get_object_or_404(TutorSet, pk=tutorset_pk)
     questions_list = list(tutorSet.question_set.all())
-    random.shuffle(questions_list)
     page = request.GET.get('page')
     paginator = Paginator(questions_list, 1)
-    score = 0
 
     try:
         questions = paginator.page(page)
@@ -40,12 +38,11 @@ def tutorset_start2(request, tutorset_pk):
 
     return render(request, 'tutor_sets/quiz_attempt.html', {
         'tutorSet': tutorSet,
-        'questionSet': questions_list,
-        'score': score,
+        'questionSet': questions,
     })
 
 @login_required
-def tutorset_start(request, tutorset_pk):
+def tutorset_start2(request, tutorset_pk):
     tutorSet = get_object_or_404(TutorSet, pk=tutorset_pk)
 
     question = Question.objects.first()
@@ -57,6 +54,11 @@ def tutorset_start(request, tutorset_pk):
 @login_required
 def finish_quiz(request, tutorset_pk):
     tutorSet = get_object_or_404(TutorSet, pk=tutorset_pk)
+
+    if request.method == 'POST':
+        request_data = request.POST
+        request_data.getlist
+
     attempt = Attempt(tutorSet=tutorSet,
                       totalQuestions=tutorSet.question_set.count(),
                       user=request.user)
