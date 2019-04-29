@@ -1,12 +1,14 @@
 from django.shortcuts import render, get_object_or_404
-from .models import TutorSet, Question, Option, Attempt
+from .models import TutorSet, Question, Option
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.cache import never_cache
 from django.contrib import messages
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.http import HttpResponseRedirect
 from . import forms
 
 @login_required
+@never_cache
 def tutorset_create(request):
     form = forms.TutorSetForm
 
@@ -16,6 +18,7 @@ def tutorset_create(request):
             tutorSet = form.save(commit=False)
             tutorSet.author = request.user
             tutorSet.save()
+            form=forms.TutorSetForm
             messages.success(request, 'Tutor set added')
             return HttpResponseRedirect(tutorSet.get_absolute_url())
     return render(request, 'tutor_sets/tutorset_form.html', {'form': form, 'title': 'New Tutor Set'})

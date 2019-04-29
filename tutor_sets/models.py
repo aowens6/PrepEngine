@@ -21,6 +21,7 @@ class Question(models.Model):
     order = models.IntegerField(default=0)
     prompt = models.CharField(max_length=255)
     shuffle_answers = models.BooleanField(default=False)
+    explanation = models.TextField(blank=True, null=True)
 
     class Meta:
         ordering = ['order',]

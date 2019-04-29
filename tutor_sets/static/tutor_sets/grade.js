@@ -23,7 +23,9 @@ function verify(){
                 })
             }
         }
-        explanation.style.display = "block"
+        if (explanation !== null){
+            explanation.style.display = "block"
+        }
     }
 
 }

@@ -4,13 +4,18 @@
 <h1>{{ tutorSet.title }}</h1>
 
 {% for question in questionSet %}
-   <div>
-      <a href="{% url 'edit-question' tutorset_pk=tutorSet.pk question_pk=question.pk %}">
-         {{ question.prompt }}
-      </a>
+   <div class="mt-2 mb-2">
+      {% if user.is_authenticated  and tutorSet.author_id == user.id %}
+         <a href="{% url 'edit-question' tutorset_pk=tutorSet.pk question_pk=question.pk %}">
+            {{ question.prompt }}
+         </a>
+      {% else %}
+         <h4>{{ question.prompt }}</h4>
+      {% endif %}
+
          <div>
             {% for option in question.option_set.all %}
-               <div>
+               <div class="ml-4">
                   {{ option.text }}
                </div>
             {% endfor %}
