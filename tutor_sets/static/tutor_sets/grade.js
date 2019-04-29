@@ -10,9 +10,17 @@ function verify(){
             value = radios[i].value;
 
             if (value == "True"){
-                alert('Correct!');
+                swal({
+                  title: "Correct!",
+                  icon: "success",
+                  timer: 1500
+                });
             }else{
-                alert('Not quite');
+                swal({
+                  title: 'Not quite!',
+                  icon: 'error',
+                  timer: 1500
+                })
             }
         }
         explanation.style.display = "block"
