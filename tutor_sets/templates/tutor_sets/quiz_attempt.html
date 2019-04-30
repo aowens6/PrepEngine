@@ -2,38 +2,38 @@
 {% load static %}
 {% block content %}
 
-<h4>{{ questionSet.number }} of {{ questionSet.paginator.count }} questions</h4>
+    <h4>{{ questionSet.number }} of {{ questionSet.paginator.count }} questions</h4>
 
-{% for question in questionSet %}
-    <div class="card p-4 mb-4">
-        <h2>{{ question.prompt }}</h2>
+    {% for question in questionSet %}
+        <div class="card p-4 mb-4">
+            <h2>{{ question.prompt }}</h2>
 
-        <form method="POST">
-            {% csrf_token %}
-            {% for option in question.option_set.all %}
-                <div class="radio ml-4 m-2">
-                    <label><input class="mr-2" id="{{ option.id }}" type="radio" name="option-radio" value="{{option.correct}}">{{ option.text }}</label>
-                </div>
-            {% endfor %}
-            <a class="btn btn-outline-info" onclick="verify()">Verify</a>
-        </form>
+            <form method="POST">
+                {% csrf_token %}
+                {% for option in question.option_set.all %}
+                    <div class="radio ml-4 m-2">
+                        <label><input class="mr-2" id="{{ option.id }}" type="radio" name="option-radio" value="{{option.correct}}">{{ option.text }}</label>
+                    </div>
+                {% endfor %}
+                <a class="btn btn-outline-info" onclick="verify()">Verify</a>
+            </form>
 
-    </div>
-
-    {% if question.explanation %}
-        <div class="card m-4 p-4" id="explanation" style="display:none">
-            <h4>Explanation:</h4>
-            <p class="ml-4">{{ question.explanation|linebreaks }}</p>
         </div>
+
+        {% if question.explanation %}
+            <div class="card m-4 p-4" id="explanation" style="display:none">
+                <h4>Explanation:</h4>
+                <p class="ml-4">{{ question.explanation|linebreaks }}</p>
+            </div>
+        {% endif %}
+    {% endfor %}
+
+    {% if questionSet.has_next %}
+        <a class="btn btn-outline-info mb-4" href="?page={{ questionSet.next_page_number }}">Next</a>
+    {% else %}
+        <a class="btn btn-outline-info mb-4" href="{% url 'engine-home' %}">Finish</a>
     {% endif %}
-{% endfor %}
 
-{% if questionSet.has_next %}
-    <a class="btn btn-outline-info mb-4" href="?page={{ questionSet.next_page_number }}">Next</a>
-{% else %}
-    <a class="btn btn-outline-info mb-4" href="{% url 'engine-home' %}">Finish</a>
-{% endif %}
-
-<script src="{% static 'tutor_sets/grade.js' %}"></script>
+    <script src="{% static 'tutor_sets/grade.js' %}"></script>
 
 {% endblock content %}

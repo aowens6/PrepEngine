@@ -27,5 +27,4 @@ function verify(){
             explanation.style.display = "block"
         }
     }
-
 }

@@ -139,25 +139,6 @@ def question_delete(request, question_pk):
     messages.success(request, f'{question.prompt} deleted')
     return HttpResponseRedirect(question.get_absolute_url())
 
-@login_required
-def option_create(request, question_pk):
-    question = get_object_or_404(Question, pk=question_pk)
-    formset = forms.OptionFormSet(queryset=question.option_set.all())
-
-    if request.method == 'POST':
-        formset = forms.OptionFormSet(request.POST, queryset=question.option_set.all())
-
-        if formset.is_valid():
-            options = formset.save(commit=False)
-
-            for option in options:
-                option.question = question
-                option.save()
-            messages.success(request, 'Added new options')
-            return HttpResponseRedirect(question.get_absolute_url())
-    return render(request, 'tutor_sets/option_form.html',
-                  {'formset': formset, 'title': 'New Options', 'question': question})
-
 
 @login_required
 def tutorset_overview(request, tutorset_pk):

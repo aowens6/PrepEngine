@@ -18,10 +18,6 @@ def register(request):
         form = UserRegisterForm()
     return render(request,'users/register.html', {'form': form})
 
-@login_required
-def profile(request):
-    return render(request, 'users/profile.html')
-
 def creator_profile(request, creator_pk):
     creator=User.objects.get(pk=creator_pk)
     tutorSets = TutorSet.objects.filter(author=creator)

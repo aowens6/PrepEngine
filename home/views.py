@@ -31,6 +31,7 @@ class UserTutorSetListView(ListView):
         user = get_object_or_404(User, username=self.kwargs.get('username'))
         return TutorSet.objects.filter(author=user)
 
+
 class ReportListView(ListView):
     model = TutorSet
     template_name = 'home/reports.html'
