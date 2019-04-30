@@ -2,6 +2,7 @@ from django.shortcuts import get_object_or_404
 from tutor_sets.models import TutorSet, Attempt
 from django.views.generic import ListView
 from django.contrib.auth.models import User
+from django.db.models import Q
 
 
 class TutorSetListView(ListView):
@@ -13,7 +14,7 @@ class TutorSetListView(ListView):
     def get_queryset(self):
         if 'search' in self.request.GET:
             search_term = self.request.GET['search']
-            return TutorSet.objects.filter(title__icontains=search_term)
+            return TutorSet.objects.filter(Q(title__icontains=search_term)|Q(author__username__icontains=search_term))
         return TutorSet.objects.all()
 
     def get_context_data(self, *, object_list=None, **kwargs):
