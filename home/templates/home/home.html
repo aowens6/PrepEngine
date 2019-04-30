@@ -1,11 +1,28 @@
 {% extends "home/base.html" %}
 {% block content %}
+<form class="form-inline my-2 my-lg-0">
+  <input
+      class="form-control mr-sm-2"
+      type="search"
+      placeholder="Search Tutor Sets"
+      aria-label="Search"
+      name="search"
+      value="{{search_term}}"
+  >
+  <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+</form>
     {% if user.is_authenticated %}
         {% for tutorSet in tutorSets %}
         <a style="text-decoration: none" href="{% url 'tutorSet-detail' tutorSet.pk %}">
             <div class="card mt-2 mb-2" style="width: 35%">
                 <h5 class="card-title m-2">{{ tutorSet.title }}</h5>
-                <p class="card-title ml-4">Created by: <a style="display: inline-block" href="{% url 'creator-profile' creator_pk=tutorSet.author.id %}">{{ tutorSet.author.username }}</a></p>
+                <p class="card-title ml-4">
+                    Created by:
+                    <a style="display: inline-block" href="{% url 'creator-profile' creator_pk=tutorSet.author.id %}">{{ tutorSet.author.username }}</a>
+                </p>
+                {% if tutorSet.description %}
+                    <p class="ml-4">{{tutorSet.description}}</p>
+                {% endif %}
             </div>
         </a>
         {% endfor %}

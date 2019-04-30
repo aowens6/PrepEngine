@@ -5,8 +5,7 @@ from django.contrib.auth.models import User
 
 class TutorSet(models.Model):
     title = models.CharField(max_length=100)
-    score = models.PositiveIntegerField(default=0)
-    totalQuestions = models.PositiveIntegerField(default=0)
+    description = models.TextField(blank=True, null=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):

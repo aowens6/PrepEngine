@@ -1,19 +1,25 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import get_object_or_404
 from tutor_sets.models import TutorSet, Attempt
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView
 from django.contrib.auth.models import User
 
-def home(request):
-    context = {
-        'tutorSets' : TutorSet.objects.all()
-    }
-    return render(request, 'home/home.html', context)
 
 class TutorSetListView(ListView):
     model = TutorSet
     template_name = 'home/home.html'
     context_object_name = 'tutorSets'
     paginate_by = 5
+
+    def get_queryset(self):
+        if 'search' in self.request.GET:
+            search_term = self.request.GET['search']
+            return TutorSet.objects.filter(title__icontains=search_term)
+        return TutorSet.objects.all()
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(TutorSetListView, self).get_context_data(**kwargs)
+        context['search_term'] = self.request.GET['search']
+        return context
 
 
 class UserTutorSetListView(ListView):

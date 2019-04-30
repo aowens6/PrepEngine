@@ -6,7 +6,7 @@ class TutorSetForm(forms.ModelForm):
         model = TutorSet
         fields = [
             'title',
-            'totalQuestions',
+            'description',
         ]
 
 
