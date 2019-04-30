@@ -43,12 +43,3 @@ class Option(models.Model):
 
     def __str__(self):
         return self.text
-
-class Attempt(models.Model):
-    tutorSet = models.ForeignKey(TutorSet, on_delete=models.CASCADE)
-    numberCorrect = models.IntegerField(default=0)
-    totalQuestions = models.IntegerField(default=0)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return self.tutorSet.title

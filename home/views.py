@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404
-from tutor_sets.models import TutorSet, Attempt
+from tutor_sets.models import TutorSet
 from django.views.generic import ListView
 from django.contrib.auth.models import User
 from django.db.models import Q
@@ -30,15 +30,4 @@ class UserTutorSetListView(ListView):
     def get_queryset(self):
         user = get_object_or_404(User, username=self.kwargs.get('username'))
         return TutorSet.objects.filter(author=user)
-
-
-class UserAttemptsListView(ListView):
-    model = Attempt
-    template_name = 'home/user_attempts.html'
-    context_object_name = 'attempts'
-    paginate_by = 5
-
-    def get_queryset(self):
-        user = get_object_or_404(User, username=self.kwargs.get('username'))
-        return Attempt.objects.filter(user=user)
 
