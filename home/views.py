@@ -14,13 +14,11 @@ class TutorSetListView(ListView):
     def get_queryset(self):
         if 'search' in self.request.GET:
             search_term = self.request.GET['search']
-            return TutorSet.objects.filter(Q(title__icontains=search_term)|Q(author__username__icontains=search_term))
+            return TutorSet.objects.filter(
+                            Q(title__icontains=search_term)|
+                            Q(author__username__icontains=search_term)|
+                            Q(description__icontains=search_term))
         return TutorSet.objects.all()
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super(TutorSetListView, self).get_context_data(**kwargs)
-        context['search_term'] = self.request.GET['search']
-        return context
 
 
 class UserTutorSetListView(ListView):
