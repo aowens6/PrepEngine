@@ -1,7 +1,7 @@
 {% extends "home/base.html" %}
 {% block content %}
 
-    {% if tutorSets %}
+    {% if tutorSets and user.is_authenticated %}
     <form class="form-inline my-2 my-lg-0">
       <input
           class="form-control mr-sm-2 "
