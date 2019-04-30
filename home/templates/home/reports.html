@@ -1,0 +1,33 @@
+{% extends "home/base.html" %}
+{% block content %}
+    {% if tutorSets %}
+    <form class="form-inline my-2 my-lg-0">
+      <input
+          class="form-control mr-sm-2 "
+          type="search"
+          placeholder="Search Tutor Sets"
+          aria-label="Search"
+          name="search"
+      >
+      <button class="btn btn-outline-success my-2 my-sm-0 " type="submit">Search</button>
+    </form>
+    {% endif %}
+
+    <table style="width:100%" class=".table m-4">
+        <tr>
+            <th>Title</th>
+            <th>Creator</th>
+            <th>Date Created</th>
+            <th>Date Last Updated</th>
+        </tr>
+        {% for tutorSet in tutorSets %}
+            <tr>
+                <td>{{ tutorSet.title }}</td>
+                <td>{{ tutorSet.author.username }}</td>
+                <td>{{ tutorSet.date_created}}</td>
+                <td>{{ tutorSet.date_updated}}</td>
+            </tr>
+        {% endfor %}
+    </table>
+
+{% endblock %}
